@@ -3,7 +3,7 @@ package sql
 import (
 	"GraphQLTestCase/internal/domain"
 	"GraphQLTestCase/internal/infrastructure/entities"
-	"GraphQLTestCase/lib/logger/slogdiscard"
+	"GraphQLTestCase/pkg/logger/slogdiscard"
 	"context"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"

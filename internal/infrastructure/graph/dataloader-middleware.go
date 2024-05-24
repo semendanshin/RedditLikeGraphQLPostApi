@@ -3,7 +3,7 @@ package graph
 import (
 	"GraphQLTestCase/internal/domain"
 	usecaseInterfaces "GraphQLTestCase/internal/interfaces/usecases"
-	"GraphQLTestCase/lib/dataloader"
+	"GraphQLTestCase/pkg/dataloader"
 	"context"
 	"github.com/google/uuid"
 	"log/slog"

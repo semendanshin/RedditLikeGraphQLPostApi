@@ -2,7 +2,7 @@ package in_memory
 
 import (
 	"GraphQLTestCase/internal/domain"
-	"GraphQLTestCase/lib/logger/slogdiscard"
+	"GraphQLTestCase/pkg/logger/slogdiscard"
 	"context"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
