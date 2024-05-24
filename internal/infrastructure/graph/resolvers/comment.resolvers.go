@@ -17,8 +17,6 @@ import (
 
 // Author is the resolver for the author field.
 func (r *commentResolver) Author(ctx context.Context, obj *model.Comment) (*model.User, error) {
-	const op = "commentResolver.Author"
-
 	user, err := graph.GetUserLoader(ctx).Load(obj.AuthorID)
 	if err != nil {
 		return nil, err
@@ -29,8 +27,6 @@ func (r *commentResolver) Author(ctx context.Context, obj *model.Comment) (*mode
 
 // Post is the resolver for the post field.
 func (r *commentResolver) Post(ctx context.Context, obj *model.Comment) (*model.Post, error) {
-	const op = "commentResolver.Post"
-
 	post, err := graph.GetPostLoader(ctx).Load(obj.PostID)
 	if err != nil {
 		return nil, err
@@ -42,8 +38,6 @@ func (r *commentResolver) Post(ctx context.Context, obj *model.Comment) (*model.
 
 // Parent is the resolver for the parent field.
 func (r *commentResolver) Parent(ctx context.Context, obj *model.Comment) (*model.Comment, error) {
-	const op = "commentResolver.Parent"
-
 	if obj.ParentID == nil {
 		return nil, nil
 	}
@@ -58,8 +52,6 @@ func (r *commentResolver) Parent(ctx context.Context, obj *model.Comment) (*mode
 
 // Children is the resolver for the children field.
 func (r *commentResolver) Children(ctx context.Context, obj *model.Comment, limit *int, offset *int) ([]*model.Comment, error) {
-	const op = "commentResolver.Children"
-
 	comments, err := r.cuc.GetChildren(ctx, obj.ID, *limit, *offset)
 	if err != nil {
 		return nil, err
@@ -75,8 +67,6 @@ func (r *commentResolver) Children(ctx context.Context, obj *model.Comment, limi
 
 // CreateComment is the resolver for the createComment field.
 func (r *mutationResolver) CreateComment(ctx context.Context, input model.NewComment) (*model.Comment, error) {
-	const op = "commentResolver.CreateComment"
-
 	comment := mappers.CreateDTOToDomainComment(&input)
 
 	err := r.cuc.Create(ctx, comment)
@@ -89,8 +79,6 @@ func (r *mutationResolver) CreateComment(ctx context.Context, input model.NewCom
 
 // Comment is the resolver for the comment field.
 func (r *queryResolver) Comment(ctx context.Context, id uuid.UUID) (*model.Comment, error) {
-	const op = "commentResolver.Comment"
-
 	comment, err := r.cuc.GetByID(ctx, id)
 	if err != nil {
 		return nil, err
@@ -101,8 +89,6 @@ func (r *queryResolver) Comment(ctx context.Context, id uuid.UUID) (*model.Comme
 
 // Comments is the resolver for the comments field.
 func (r *queryResolver) Comments(ctx context.Context, postID uuid.UUID, limit *int, offset *int) ([]*model.Comment, error) {
-	const op = "commentResolver.Comments"
-
 	comments, err := r.cuc.GetByPostID(ctx, postID, *limit, *offset)
 	if err != nil {
 		return nil, err

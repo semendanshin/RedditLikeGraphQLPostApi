@@ -6,6 +6,7 @@ import (
 	"GraphQLTestCase/internal/infrastructure/graph/model"
 )
 
+// ModelToDomainUser maps a model.User to a domain.User.
 func ModelToDomainUser(dto *model.User) *domain.User {
 	return &domain.User{
 		ID:   dto.ID,
@@ -13,6 +14,7 @@ func ModelToDomainUser(dto *model.User) *domain.User {
 	}
 }
 
+// DomainToModelUser maps a domain.User to a model.User.
 func DomainToModelUser(domain *domain.User) *model.User {
 	return &model.User{
 		ID:   domain.ID,
@@ -20,6 +22,7 @@ func DomainToModelUser(domain *domain.User) *model.User {
 	}
 }
 
+// DomainToEntityUser maps a domain.User to an entities.User.
 func DomainToEntityUser(domain *domain.User) *entities.User {
 	return &entities.User{
 		ID:   domain.ID,
@@ -27,6 +30,7 @@ func DomainToEntityUser(domain *domain.User) *entities.User {
 	}
 }
 
+// EntityToDomainUser maps an entities.User to a domain.User.
 func EntityToDomainUser(entity *entities.User) *domain.User {
 	return &domain.User{
 		ID:   entity.ID,
@@ -34,6 +38,7 @@ func EntityToDomainUser(entity *entities.User) *domain.User {
 	}
 }
 
+// CreateDTOToDomainUser maps a model.NewUser to a domain.User.
 func CreateDTOToDomainUser(dto *model.NewUser) *domain.User {
 	return &domain.User{
 		Name: dto.Name,

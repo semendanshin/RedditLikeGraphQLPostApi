@@ -11,10 +11,12 @@ import (
 	"time"
 )
 
+type key string
+
 const (
-	userLoaderKey    = "userloader"
-	commentLoaderKey = "commentloader"
-	postLoaderKey    = "postloader"
+	userLoaderKey    key = "userloader"
+	commentLoaderKey key = "commentloader"
+	postLoaderKey    key = "postloader"
 )
 
 const (
@@ -24,6 +26,7 @@ const (
 	cacheCleanerInterval = 500 * time.Millisecond
 )
 
+// IdsLoader is an interface for loading entities by their IDs.
 type IdsLoader[TValue any] interface {
 	GetByIds(ctx context.Context, ids []uuid.UUID) ([]*TValue, error)
 }
@@ -49,6 +52,7 @@ func newLoader[TValue any](ctx context.Context, idsLoader IdsLoader[TValue], log
 	)
 }
 
+// DataLoaderMiddleware is a middleware that adds data loaders to the context.
 func DataLoaderMiddleware(
 	puc usecaseInterfaces.PostUseCase,
 	cuc usecaseInterfaces.CommentUseCase,
@@ -58,9 +62,10 @@ func DataLoaderMiddleware(
 	const op = "DataLoaderMiddleware"
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			userLoader := newLoader[domain.User](r.Context(), uuc, logger)
-			commentLoader := newLoader[domain.Comment](r.Context(), cuc, logger)
-			postLoader := newLoader[domain.Post](r.Context(), puc, logger)
+			log := logger.With(slog.String("op", op))
+			userLoader := newLoader[domain.User](r.Context(), uuc, log)
+			commentLoader := newLoader[domain.Comment](r.Context(), cuc, log)
+			postLoader := newLoader[domain.Post](r.Context(), puc, log)
 
 			ctx := r.Context()
 			ctx = context.WithValue(ctx, userLoaderKey, userLoader)
@@ -72,14 +77,17 @@ func DataLoaderMiddleware(
 	}
 }
 
+// GetUserLoader returns the user loader from the context.
 func GetUserLoader(ctx context.Context) *dataloader.Loader[domain.User, uuid.UUID] {
 	return ctx.Value(userLoaderKey).(*dataloader.Loader[domain.User, uuid.UUID])
 }
 
+// GetCommentLoader returns the comment loader from the context.
 func GetCommentLoader(ctx context.Context) *dataloader.Loader[domain.Comment, uuid.UUID] {
 	return ctx.Value(commentLoaderKey).(*dataloader.Loader[domain.Comment, uuid.UUID])
 }
 
+// GetPostLoader returns the post loader from the context.
 func GetPostLoader(ctx context.Context) *dataloader.Loader[domain.Post, uuid.UUID] {
 	return ctx.Value(postLoaderKey).(*dataloader.Loader[domain.Post, uuid.UUID])
 }

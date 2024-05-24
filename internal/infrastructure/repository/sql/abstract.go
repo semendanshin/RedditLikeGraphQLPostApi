@@ -10,10 +10,12 @@ import (
 	"log/slog"
 )
 
+// Entity is an interface for entities.
 type Entity interface{}
 
 var _ usecases.AbstractRepositoryInterface[domain.Model] = &AbstractSQLRepository[domain.Model, Entity]{}
 
+// AbstractSQLRepository is a repository for SQL databases.
 type AbstractSQLRepository[TModel domain.Model, TEntity Entity] struct {
 	db            *gorm.DB
 	logger        *slog.Logger
@@ -21,6 +23,7 @@ type AbstractSQLRepository[TModel domain.Model, TEntity Entity] struct {
 	entityToModel func(entity *TEntity) TModel
 }
 
+// NewAbstractSQLRepository creates a new AbstractSQLRepository.
 func NewAbstractSQLRepository[TModel domain.Model, TEntity Entity](
 	db *gorm.DB,
 	logger *slog.Logger,
@@ -35,6 +38,7 @@ func NewAbstractSQLRepository[TModel domain.Model, TEntity Entity](
 	}
 }
 
+// Create creates a new entity.
 func (r *AbstractSQLRepository[TModel, TEntity]) Create(ctx context.Context, model TModel) error {
 	const op = "AbstractSQLRepository.Create"
 	entity := r.modelToEntity(model)
@@ -48,6 +52,7 @@ func (r *AbstractSQLRepository[TModel, TEntity]) Create(ctx context.Context, mod
 	return nil
 }
 
+// Update updates an entity.
 func (r *AbstractSQLRepository[TModel, TEntity]) Update(ctx context.Context, model TModel) error {
 	const op = "AbstractSQLRepository.Update"
 	entity := r.modelToEntity(model)
@@ -61,6 +66,7 @@ func (r *AbstractSQLRepository[TModel, TEntity]) Update(ctx context.Context, mod
 	return nil
 }
 
+// Delete deletes an entity.
 func (r *AbstractSQLRepository[TModel, TEntity]) Delete(ctx context.Context, id uuid.UUID) error {
 	const op = "AbstractSQLRepository.Delete"
 	var entity TEntity
@@ -74,6 +80,7 @@ func (r *AbstractSQLRepository[TModel, TEntity]) Delete(ctx context.Context, id 
 	return nil
 }
 
+// GetByID returns an entity by ID.
 func (r *AbstractSQLRepository[TModel, TEntity]) GetByID(ctx context.Context, id uuid.UUID) (TModel, error) {
 	const op = "AbstractSQLRepository.GetByID"
 	var entity TEntity
@@ -88,6 +95,7 @@ func (r *AbstractSQLRepository[TModel, TEntity]) GetByID(ctx context.Context, id
 	return r.entityToModel(&entity), nil
 }
 
+// GetByIds returns entities by IDs.
 func (r *AbstractSQLRepository[TModel, TEntity]) GetByIds(ctx context.Context, ids []uuid.UUID) ([]TModel, error) {
 	const op = "AbstractSQLRepository.GetByIds"
 	var entities []*TEntity
@@ -105,6 +113,7 @@ func (r *AbstractSQLRepository[TModel, TEntity]) GetByIds(ctx context.Context, i
 	return models, nil
 }
 
+// GetAll returns all entities.
 func (r *AbstractSQLRepository[TModel, TEntity]) GetAll(ctx context.Context, limit int, offset int) ([]TModel, error) {
 	const op = "AbstractSQLRepository.GetAll"
 	var entities []*TEntity

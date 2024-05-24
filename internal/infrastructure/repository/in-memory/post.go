@@ -1,4 +1,4 @@
-package in_memory
+package inmemory
 
 import (
 	"GraphQLTestCase/internal/domain"
@@ -10,16 +10,19 @@ import (
 
 var _ usecases.PostRepository = &PostInMemoryRepository{}
 
+// PostInMemoryRepository is a repository for posts.
 type PostInMemoryRepository struct {
 	AbstractInMemoryRepository[*domain.Post]
 }
 
+// NewPostInMemoryRepository creates a new PostInMemoryRepository.
 func NewPostInMemoryRepository(logger *slog.Logger) *PostInMemoryRepository {
 	return &PostInMemoryRepository{
 		AbstractInMemoryRepository: NewAbstractInMemoryRepository[*domain.Post](logger),
 	}
 }
 
+// GetByAuthorID returns all posts by a user.
 func (r *PostInMemoryRepository) GetByAuthorID(ctx context.Context, userID uuid.UUID, limit int, offset int) ([]*domain.Post, error) {
 	r.m.Lock()
 	defer r.m.Unlock()

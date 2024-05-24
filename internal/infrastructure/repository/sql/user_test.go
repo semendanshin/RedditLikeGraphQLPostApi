@@ -36,29 +36,29 @@ func setupUserSQLRepository(t *testing.T) (*gorm.DB, *UserSQLRepository) {
 func TestUserSQLRepository_Create_Success(t *testing.T) {
 	_, userRepo := setupUserSQLRepository(t)
 
-	Id := uuid.New()
+	ID := uuid.New()
 	err := userRepo.Create(context.Background(), &domain.User{
-		ID:   Id,
+		ID:   ID,
 		Name: "Test user",
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	user, err := userRepo.GetByID(context.Background(), Id)
+	user, err := userRepo.GetByID(context.Background(), ID)
 
 	assert.NoError(t, err)
 	assert.NotNil(t, user)
 	assert.Equal(t, "Test user", user.Name)
-	assert.Equal(t, Id, user.ID)
+	assert.Equal(t, ID, user.ID)
 }
 
 func TestUserSQLRepository_Create_AlreadyExists(t *testing.T) {
 	_, userRepo := setupUserSQLRepository(t)
 
-	Id := uuid.New()
+	ID := uuid.New()
 	err := userRepo.Create(context.Background(), &domain.User{
-		ID:   Id,
+		ID:   ID,
 		Name: "Test user",
 	})
 	if err != nil {
@@ -66,7 +66,7 @@ func TestUserSQLRepository_Create_AlreadyExists(t *testing.T) {
 	}
 
 	err = userRepo.Create(context.Background(), &domain.User{
-		ID:   Id,
+		ID:   ID,
 		Name: "Test user",
 	})
 
@@ -77,9 +77,9 @@ func TestUserSQLRepository_Create_AlreadyExists(t *testing.T) {
 func TestUserSQLRepository_Update_Success(t *testing.T) {
 	_, userRepo := setupUserSQLRepository(t)
 
-	Id := uuid.New()
+	ID := uuid.New()
 	err := userRepo.Create(context.Background(), &domain.User{
-		ID:   Id,
+		ID:   ID,
 		Name: "Test user",
 	})
 	if err != nil {
@@ -87,39 +87,39 @@ func TestUserSQLRepository_Update_Success(t *testing.T) {
 	}
 
 	err = userRepo.Update(context.Background(), &domain.User{
-		ID:   Id,
+		ID:   ID,
 		Name: "Updated user",
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	user, err := userRepo.GetByID(context.Background(), Id)
+	user, err := userRepo.GetByID(context.Background(), ID)
 
 	assert.NoError(t, err)
 	assert.NotNil(t, user)
 	assert.Equal(t, "Updated user", user.Name)
-	assert.Equal(t, Id, user.ID)
+	assert.Equal(t, ID, user.ID)
 }
 
 func TestUserSQLRepository_Delete_Success(t *testing.T) {
 	_, userRepo := setupUserSQLRepository(t)
 
-	Id := uuid.New()
+	ID := uuid.New()
 	err := userRepo.Create(context.Background(), &domain.User{
-		ID:   Id,
+		ID:   ID,
 		Name: "Test user",
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	err = userRepo.Delete(context.Background(), Id)
+	err = userRepo.Delete(context.Background(), ID)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	user, err := userRepo.GetByID(context.Background(), Id)
+	user, err := userRepo.GetByID(context.Background(), ID)
 
 	assert.Error(t, err)
 	assert.Equal(t, domain.ErrNotFound, err)
@@ -129,8 +129,8 @@ func TestUserSQLRepository_Delete_Success(t *testing.T) {
 func TestUserSQLRepository_Delete_NotFound(t *testing.T) {
 	_, userRepo := setupUserSQLRepository(t)
 
-	Id := uuid.New()
-	err := userRepo.Delete(context.Background(), Id)
+	ID := uuid.New()
+	err := userRepo.Delete(context.Background(), ID)
 
 	assert.NoError(t, err)
 }
@@ -138,8 +138,8 @@ func TestUserSQLRepository_Delete_NotFound(t *testing.T) {
 func TestUserSQLRepository_GetByID_NotFound(t *testing.T) {
 	_, userRepo := setupUserSQLRepository(t)
 
-	Id := uuid.New()
-	user, err := userRepo.GetByID(context.Background(), Id)
+	ID := uuid.New()
+	user, err := userRepo.GetByID(context.Background(), ID)
 
 	assert.Error(t, err)
 	assert.Equal(t, domain.ErrNotFound, err)
@@ -149,19 +149,19 @@ func TestUserSQLRepository_GetByID_NotFound(t *testing.T) {
 func TestUserSQLRepository_GetByID_Success(t *testing.T) {
 	_, userRepo := setupUserSQLRepository(t)
 
-	Id := uuid.New()
+	ID := uuid.New()
 	err := userRepo.Create(context.Background(), &domain.User{
-		ID:   Id,
+		ID:   ID,
 		Name: "Test user",
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	user, err := userRepo.GetByID(context.Background(), Id)
+	user, err := userRepo.GetByID(context.Background(), ID)
 
 	assert.NoError(t, err)
 	assert.NotNil(t, user)
 	assert.Equal(t, "Test user", user.Name)
-	assert.Equal(t, Id, user.ID)
+	assert.Equal(t, ID, user.ID)
 }

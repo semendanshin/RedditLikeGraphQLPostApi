@@ -1,4 +1,4 @@
-package in_memory
+package inmemory
 
 import (
 	"GraphQLTestCase/internal/domain"
@@ -8,10 +8,12 @@ import (
 
 var _ usecases.UserRepository = &UserInMemoryRepository{}
 
+// UserInMemoryRepository is a repository for users.
 type UserInMemoryRepository struct {
 	AbstractInMemoryRepository[*domain.User]
 }
 
+// NewUserInMemoryRepository creates a new UserInMemoryRepository.
 func NewUserInMemoryRepository(logger *slog.Logger) *UserInMemoryRepository {
 	return &UserInMemoryRepository{
 		AbstractInMemoryRepository: NewAbstractInMemoryRepository[*domain.User](logger),

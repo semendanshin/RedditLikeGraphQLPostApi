@@ -18,6 +18,7 @@ import (
 	"os"
 )
 
+// Env constants
 const (
 	Test        = "test"
 	Production  = "prod"
@@ -106,6 +107,7 @@ func main() {
 	}
 }
 
+// InitLogger initializes a logger based on the environment.
 func InitLogger(env string) *slog.Logger {
 	var log *slog.Logger
 	if env == Production {

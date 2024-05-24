@@ -13,10 +13,12 @@ import (
 
 var _ usecases.PostRepository = &PostSQLRepository{}
 
+// PostSQLRepository is a repository for posts.
 type PostSQLRepository struct {
 	AbstractSQLRepository[*domain.Post, entities.Post]
 }
 
+// NewPostSQLRepository creates a new PostSQLRepository.
 func NewPostSQLRepository(db *gorm.DB, logger *slog.Logger) *PostSQLRepository {
 	return &PostSQLRepository{
 		AbstractSQLRepository: NewAbstractSQLRepository[*domain.Post, entities.Post](
@@ -25,6 +27,7 @@ func NewPostSQLRepository(db *gorm.DB, logger *slog.Logger) *PostSQLRepository {
 	}
 }
 
+// GetByAuthorID returns all posts by a user.
 func (r *PostSQLRepository) GetByAuthorID(ctx context.Context, userID uuid.UUID, limit int, offset int) ([]*domain.Post, error) {
 	const op = "PostSQLRepository.GetByAuthorID"
 	var posts []*domain.Post

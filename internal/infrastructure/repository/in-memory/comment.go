@@ -1,4 +1,4 @@
-package in_memory
+package inmemory
 
 import (
 	"GraphQLTestCase/internal/domain"
@@ -11,16 +11,19 @@ import (
 
 var _ usecases.CommentRepository = &CommentInMemoryRepository{}
 
+// CommentInMemoryRepository is a repository for comments.
 type CommentInMemoryRepository struct {
 	AbstractInMemoryRepository[*domain.Comment]
 }
 
+// NewCommentInMemoryRepository creates a new CommentInMemoryRepository.
 func NewCommentInMemoryRepository(logger *slog.Logger) *CommentInMemoryRepository {
 	return &CommentInMemoryRepository{
 		AbstractInMemoryRepository: NewAbstractInMemoryRepository[*domain.Comment](logger),
 	}
 }
 
+// GetChildren returns all children of a comment.
 func (r *CommentInMemoryRepository) GetChildren(ctx context.Context, commentID uuid.UUID, limit int, offset int) ([]*domain.Comment, error) {
 	r.m.Lock()
 	defer r.m.Unlock()
@@ -42,6 +45,7 @@ func (r *CommentInMemoryRepository) GetChildren(ctx context.Context, commentID u
 	return comments, nil
 }
 
+// GetByPostID returns all comments for a post.
 func (r *CommentInMemoryRepository) GetByPostID(ctx context.Context, postID uuid.UUID, limit int, offset int) ([]*domain.Comment, error) {
 	r.m.Lock()
 	defer r.m.Unlock()
@@ -62,6 +66,7 @@ func (r *CommentInMemoryRepository) GetByPostID(ctx context.Context, postID uuid
 	return comments, nil
 }
 
+// GetLastComment returns the last comments of a post.
 func (r *CommentInMemoryRepository) GetLastComment(ctx context.Context, postID uuid.UUID, lastSeen time.Time, limit int) ([]*domain.Comment, error) {
 	r.m.Lock()
 	defer r.m.Unlock()

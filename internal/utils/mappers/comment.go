@@ -6,6 +6,7 @@ import (
 	"GraphQLTestCase/internal/infrastructure/graph/model"
 )
 
+// ModelToDomainComment maps a model.Comment to a domain.Comment.
 func ModelToDomainComment(dto *model.Comment) *domain.Comment {
 	return &domain.Comment{
 		ID:        dto.ID,
@@ -18,6 +19,7 @@ func ModelToDomainComment(dto *model.Comment) *domain.Comment {
 	}
 }
 
+// DomainToModelComment maps a domain.Comment to a model.Comment.
 func DomainToModelComment(domain *domain.Comment) *model.Comment {
 	return &model.Comment{
 		ID:        domain.ID,
@@ -30,6 +32,7 @@ func DomainToModelComment(domain *domain.Comment) *model.Comment {
 	}
 }
 
+// DomainToEntityComment maps a domain.Comment to an entities.Comment.
 func DomainToEntityComment(domain *domain.Comment) *entities.Comment {
 	return &entities.Comment{
 		ID:        domain.ID,
@@ -42,6 +45,7 @@ func DomainToEntityComment(domain *domain.Comment) *entities.Comment {
 	}
 }
 
+// EntityToDomainComment maps an entities.Comment to a domain.Comment.
 func EntityToDomainComment(entity *entities.Comment) *domain.Comment {
 	return &domain.Comment{
 		ID:        entity.ID,
@@ -54,6 +58,7 @@ func EntityToDomainComment(entity *entities.Comment) *domain.Comment {
 	}
 }
 
+// CreateDTOToDomainComment maps a model.NewComment to a domain.Comment.
 func CreateDTOToDomainComment(dto *model.NewComment) *domain.Comment {
 	return &domain.Comment{
 		PostID:   dto.PostID,

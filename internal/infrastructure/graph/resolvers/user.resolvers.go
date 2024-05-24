@@ -15,8 +15,6 @@ import (
 
 // CreateUser is the resolver for the createUser field.
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (*model.User, error) {
-	const op = "UserResolver.CreateUser"
-
 	usr := mappers.CreateDTOToDomainUser(&input)
 
 	err := r.uuc.Create(ctx, usr)
@@ -29,8 +27,6 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) 
 
 // User is the resolver for the user field.
 func (r *queryResolver) User(ctx context.Context, id uuid.UUID) (*model.User, error) {
-	const op = "UserResolver.User"
-
 	usr, err := r.uuc.GetByID(ctx, id)
 	if err != nil {
 		return nil, err
@@ -41,8 +37,6 @@ func (r *queryResolver) User(ctx context.Context, id uuid.UUID) (*model.User, er
 
 // Users is the resolver for the users field.
 func (r *queryResolver) Users(ctx context.Context, limit *int, offset *int) ([]*model.User, error) {
-	const op = "UserResolver.Users"
-
 	users, err := r.uuc.GetAll(ctx, *limit, *offset)
 	if err != nil {
 		return nil, err
@@ -58,8 +52,6 @@ func (r *queryResolver) Users(ctx context.Context, limit *int, offset *int) ([]*
 
 // Posts is the resolver for the posts field.
 func (r *userResolver) Posts(ctx context.Context, obj *model.User, limit *int, offset *int) ([]*model.Post, error) {
-	const op = "UserResolver.Posts"
-
 	posts, err := r.puc.GetByAuthorID(ctx, obj.ID, *limit, *offset)
 	if err != nil {
 		return nil, err

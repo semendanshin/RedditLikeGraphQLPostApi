@@ -11,6 +11,7 @@ import (
 //
 // It serves as dependency injection for your app, add any dependencies you require here.
 
+// Resolver is used as dependency injection
 type Resolver struct {
 	puc    usecaseInterfaces.PostUseCase
 	cuc    usecaseInterfaces.CommentUseCase

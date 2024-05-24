@@ -17,6 +17,7 @@ import (
 
 const defaultPort = "8080"
 
+// Server is a GraphQL server.
 type Server struct {
 	port             string
 	logger           *slog.Logger
@@ -29,6 +30,7 @@ type Server struct {
 	userUseCase    usecases.UserUseCase
 }
 
+// NewServer creates a new server.
 func NewServer(
 	port string,
 	logger *slog.Logger,
@@ -49,6 +51,7 @@ func NewServer(
 	}
 }
 
+// Run starts the server.
 func (s *Server) Run() error {
 	if s.port = os.Getenv("PORT"); s.port == "" {
 		s.port = defaultPort

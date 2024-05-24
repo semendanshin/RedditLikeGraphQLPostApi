@@ -6,6 +6,7 @@ import (
 	"GraphQLTestCase/internal/infrastructure/graph/model"
 )
 
+// ModelToDomainPost maps a model.Post to a domain.Post.
 func ModelToDomainPost(dto *model.Post) *domain.Post {
 	return &domain.Post{
 		ID:            dto.ID,
@@ -18,6 +19,7 @@ func ModelToDomainPost(dto *model.Post) *domain.Post {
 	}
 }
 
+// DomainToModelPost maps a domain.Post to a model.Post.
 func DomainToModelPost(domain *domain.Post) *model.Post {
 	return &model.Post{
 		ID:            domain.ID,
@@ -30,6 +32,7 @@ func DomainToModelPost(domain *domain.Post) *model.Post {
 	}
 }
 
+// DomainToEntityPost maps a domain.Post to an entities.Post.
 func DomainToEntityPost(domain *domain.Post) *entities.Post {
 	return &entities.Post{
 		ID:            domain.ID,
@@ -42,6 +45,7 @@ func DomainToEntityPost(domain *domain.Post) *entities.Post {
 	}
 }
 
+// EntityToDomainPost maps an entities.Post to a domain.Post.
 func EntityToDomainPost(entity *entities.Post) *domain.Post {
 	return &domain.Post{
 		ID:            entity.ID,
@@ -54,6 +58,7 @@ func EntityToDomainPost(entity *entities.Post) *domain.Post {
 	}
 }
 
+// CreateDTOToDomainPost maps a model.NewPost to a domain.Post.
 func CreateDTOToDomainPost(dto *model.NewPost) *domain.Post {
 	var allowComments bool
 	if dto.AllowComments != nil {

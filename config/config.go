@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// Config is the configuration for the application.
 type Config struct {
 	Env         string   `yaml:"env" env-required:"true"` // dev, test, prod
 	Server      Server   `yaml:"server"`
@@ -14,11 +15,13 @@ type Config struct {
 	Postgres    Postgres `yaml:"postgres"`
 }
 
+// Server is the configuration for the server.
 type Server struct {
 	Address string        `yaml:"address" env-required:"true"`
 	Timeout time.Duration `yaml:"timeout" env-required:"true"`
 }
 
+// Postgres is the configuration for the PostgreSQL database.
 type Postgres struct {
 	Host string `yaml:"host"`
 	Port int    `yaml:"port"`
@@ -27,6 +30,7 @@ type Postgres struct {
 	Name string `yaml:"name"`
 }
 
+// MustParseConfig parses the configuration from the given path.
 func MustParseConfig(path string) Config {
 	var cfg Config
 
@@ -38,6 +42,7 @@ func MustParseConfig(path string) Config {
 	return cfg
 }
 
+// FetchPath fetches the path to the configuration file.
 func FetchPath() string {
 	var path string
 	flag.StringVar(&path, "config", "", "path to config file")

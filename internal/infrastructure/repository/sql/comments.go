@@ -14,10 +14,12 @@ import (
 
 var _ usecases.CommentRepository = &CommentSQLRepository{}
 
+// CommentSQLRepository is a repository for comments.
 type CommentSQLRepository struct {
 	AbstractSQLRepository[*domain.Comment, entities.Comment]
 }
 
+// NewCommentSQLRepository creates a new CommentSQLRepository.
 func NewCommentSQLRepository(db *gorm.DB, logger *slog.Logger) *CommentSQLRepository {
 	return &CommentSQLRepository{
 		AbstractSQLRepository: NewAbstractSQLRepository[*domain.Comment, entities.Comment](
@@ -26,6 +28,7 @@ func NewCommentSQLRepository(db *gorm.DB, logger *slog.Logger) *CommentSQLReposi
 	}
 }
 
+// GetByPostID returns all comments for a post.
 func (r *CommentSQLRepository) GetByPostID(ctx context.Context, postID uuid.UUID, limit int, offset int) ([]*domain.Comment, error) {
 	const op = "CommentSQLRepository.GetByPostID"
 	var comments []*domain.Comment
@@ -40,6 +43,7 @@ func (r *CommentSQLRepository) GetByPostID(ctx context.Context, postID uuid.UUID
 	return comments, nil
 }
 
+// GetChildren returns all children of a comment.
 func (r *CommentSQLRepository) GetChildren(ctx context.Context, commentID uuid.UUID, limit int, offset int) ([]*domain.Comment, error) {
 	const op = "CommentSQLRepository.GetChildren"
 	var comments []*domain.Comment
@@ -54,6 +58,7 @@ func (r *CommentSQLRepository) GetChildren(ctx context.Context, commentID uuid.U
 	return comments, nil
 }
 
+// GetLastComment returns the last comments of a post.
 func (r *CommentSQLRepository) GetLastComment(ctx context.Context, postID uuid.UUID, lastSeen time.Time, limit int) ([]*domain.Comment, error) {
 	const op = "CommentSQLRepository.GetLastComment"
 	var comments []*domain.Comment

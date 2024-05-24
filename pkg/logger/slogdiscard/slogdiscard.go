@@ -5,32 +5,35 @@ import (
 	"log/slog"
 )
 
+// NewDiscardLogger returns a logger that discards all log entries
 func NewDiscardLogger() *slog.Logger {
 	return slog.New(NewDiscardHandler())
 }
 
+// DiscardHandler is a handler that discards all log entries
 type DiscardHandler struct{}
 
+// NewDiscardHandler returns a new DiscardHandler
 func NewDiscardHandler() *DiscardHandler {
 	return &DiscardHandler{}
 }
 
+// Handle just ignores the log entry
 func (h *DiscardHandler) Handle(_ context.Context, _ slog.Record) error {
-	// Просто игнорируем запись журнала
 	return nil
 }
 
+// WithAttrs returns the sane handler since there are no attributes to save
 func (h *DiscardHandler) WithAttrs(_ []slog.Attr) slog.Handler {
-	// Возвращает тот же обработчик, так как нет атрибутов для сохранения
 	return h
 }
 
+// WithGroup returns the same handler since there is no group to save
 func (h *DiscardHandler) WithGroup(_ string) slog.Handler {
-	// Возвращает тот же обработчик, так как нет группы для сохранения
 	return h
 }
 
+// Enabled returns false since we don't want to log anything
 func (h *DiscardHandler) Enabled(_ context.Context, _ slog.Level) bool {
-	// Всегда возвращает false, так как запись журнала игнорируется
 	return false
 }

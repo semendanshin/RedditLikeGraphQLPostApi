@@ -14,8 +14,6 @@ import (
 
 // CreatePost is the resolver for the createPost field.
 func (r *mutationResolver) CreatePost(ctx context.Context, input model.NewPost) (*model.Post, error) {
-	const op = "PostResolver.CreatePost"
-
 	post := mappers.CreateDTOToDomainPost(&input)
 
 	err := r.puc.Create(ctx, post)
@@ -28,8 +26,6 @@ func (r *mutationResolver) CreatePost(ctx context.Context, input model.NewPost) 
 
 // DisableComments is the resolver for the disableComments field.
 func (r *mutationResolver) DisableComments(ctx context.Context, postID uuid.UUID) (*model.Post, error) {
-	const op = "PostResolver.DisableComments"
-
 	post, err := r.puc.GetByID(ctx, postID)
 	if err != nil {
 		return nil, err
@@ -47,8 +43,6 @@ func (r *mutationResolver) DisableComments(ctx context.Context, postID uuid.UUID
 
 // EnableComments is the resolver for the enableComments field.
 func (r *mutationResolver) EnableComments(ctx context.Context, postID uuid.UUID) (*model.Post, error) {
-	const op = "PostResolver.EnableComments"
-
 	post, err := r.puc.GetByID(ctx, postID)
 	if err != nil {
 		return nil, err
@@ -66,8 +60,6 @@ func (r *mutationResolver) EnableComments(ctx context.Context, postID uuid.UUID)
 
 // Comments is the resolver for the comments field.
 func (r *postResolver) Comments(ctx context.Context, obj *model.Post, limit *int, offset *int) ([]*model.Comment, error) {
-	const op = "PostResolver.Comments"
-
 	comments, err := r.cuc.GetByPostID(ctx, obj.ID, *limit, *offset)
 	if err != nil {
 		return nil, err
@@ -83,8 +75,6 @@ func (r *postResolver) Comments(ctx context.Context, obj *model.Post, limit *int
 
 // Author is the resolver for the author field.
 func (r *postResolver) Author(ctx context.Context, obj *model.Post) (*model.User, error) {
-	const op = "PostResolver.Author"
-
 	user, err := graph.GetUserLoader(ctx).Load(obj.AuthorID)
 	if err != nil {
 		return nil, err
@@ -95,8 +85,6 @@ func (r *postResolver) Author(ctx context.Context, obj *model.Post) (*model.User
 
 // Post is the resolver for the post field.
 func (r *queryResolver) Post(ctx context.Context, id uuid.UUID) (*model.Post, error) {
-	const op = "PostResolver.Post"
-
 	post, err := r.puc.GetByID(ctx, id)
 	if err != nil {
 		return nil, err
@@ -107,8 +95,6 @@ func (r *queryResolver) Post(ctx context.Context, id uuid.UUID) (*model.Post, er
 
 // Posts is the resolver for the posts field.
 func (r *queryResolver) Posts(ctx context.Context, limit *int, offset *int) ([]*model.Post, error) {
-	const op = "PostResolver.Posts"
-
 	posts, err := r.puc.GetAll(ctx, *limit, *offset)
 	if err != nil {
 		return nil, err

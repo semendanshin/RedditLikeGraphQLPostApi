@@ -1,4 +1,4 @@
-package in_memory
+package inmemory
 
 import (
 	"GraphQLTestCase/internal/domain"
@@ -11,12 +11,14 @@ import (
 
 var _ usecases.AbstractRepositoryInterface[domain.Model] = &AbstractInMemoryRepository[domain.Model]{}
 
+// AbstractInMemoryRepository is a repository for in-memory databases.
 type AbstractInMemoryRepository[T domain.Model] struct {
 	entities map[uuid.UUID]T
 	m        sync.Mutex
 	logger   *slog.Logger
 }
 
+// NewAbstractInMemoryRepository creates a new AbstractInMemoryRepository.
 func NewAbstractInMemoryRepository[T domain.Model](logger *slog.Logger) AbstractInMemoryRepository[T] {
 	return AbstractInMemoryRepository[T]{
 		entities: make(map[uuid.UUID]T),
@@ -25,8 +27,8 @@ func NewAbstractInMemoryRepository[T domain.Model](logger *slog.Logger) Abstract
 	}
 }
 
+// Create creates a new entity.
 func (r *AbstractInMemoryRepository[T]) Create(ctx context.Context, entity T) error {
-	const op = "AbstractInMemoryRepository.Create"
 	r.m.Lock()
 	defer r.m.Unlock()
 	if _, ok := r.entities[entity.GetID()]; ok {
@@ -37,8 +39,8 @@ func (r *AbstractInMemoryRepository[T]) Create(ctx context.Context, entity T) er
 	return nil
 }
 
+// Update updates an entity.
 func (r *AbstractInMemoryRepository[T]) Update(ctx context.Context, entity T) error {
-	const op = "AbstractInMemoryRepository.Update"
 	r.m.Lock()
 	defer r.m.Unlock()
 	if _, ok := r.entities[entity.GetID()]; !ok {
@@ -48,8 +50,8 @@ func (r *AbstractInMemoryRepository[T]) Update(ctx context.Context, entity T) er
 	return nil
 }
 
+// Delete deletes an entity.
 func (r *AbstractInMemoryRepository[T]) Delete(ctx context.Context, id uuid.UUID) error {
-	const op = "AbstractInMemoryRepository.Delete"
 	r.m.Lock()
 	defer r.m.Unlock()
 	if _, ok := r.entities[id]; !ok {
@@ -59,8 +61,8 @@ func (r *AbstractInMemoryRepository[T]) Delete(ctx context.Context, id uuid.UUID
 	return nil
 }
 
+// GetByID returns an entity by ID.
 func (r *AbstractInMemoryRepository[T]) GetByID(ctx context.Context, id uuid.UUID) (T, error) {
-	const op = "AbstractInMemoryRepository.GetByID"
 	r.m.Lock()
 	defer r.m.Unlock()
 	if entity, ok := r.entities[id]; ok {
@@ -70,6 +72,7 @@ func (r *AbstractInMemoryRepository[T]) GetByID(ctx context.Context, id uuid.UUI
 	return entity, domain.ErrNotFound
 }
 
+// GetByIds returns entities by IDs.
 func (r *AbstractInMemoryRepository[T]) GetByIds(ctx context.Context, ids []uuid.UUID) ([]T, error) {
 	const op = "AbstractInMemoryRepository.GetByIds"
 	r.m.Lock()
@@ -84,8 +87,8 @@ func (r *AbstractInMemoryRepository[T]) GetByIds(ctx context.Context, ids []uuid
 	return entities, nil
 }
 
+// GetAll returns all entities.
 func (r *AbstractInMemoryRepository[T]) GetAll(ctx context.Context, limit int, offset int) ([]T, error) {
-	const op = "AbstractInMemoryRepository.GetAll"
 	r.m.Lock()
 	defer r.m.Unlock()
 
