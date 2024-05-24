@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-//go:generate go run github.com/vektra/mockery/v2@v2.28.2 --name=CommentRepository
+//go:generate go run github.com/vektra/mockery/v2@v2.40.2 --name=CommentRepository
 type CommentRepository interface {
 	usecaseInterfaces.AbstractRepositoryInterface[*domain.Comment]
 	GetChildren(ctx context.Context, commentID uuid.UUID, limit int, offset int) ([]*domain.Comment, error)

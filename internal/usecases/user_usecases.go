@@ -5,7 +5,7 @@ import (
 	usecaseInterfaces "GraphQLTestCase/internal/interfaces/usecases"
 )
 
-//go:generate go run github.com/vektra/mockery/v2@v2.28.2 --name=UserRepository
+//go:generate go run github.com/vektra/mockery/v2@v2.40.2 --name=UserRepository
 type UserRepository interface {
 	usecaseInterfaces.AbstractRepositoryInterface[*domain.User]
 }

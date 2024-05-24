@@ -37,7 +37,7 @@ func TestUserSQLRepository_Create_Success(t *testing.T) {
 	_, userRepo := setupUserSQLRepository(t)
 
 	Id := uuid.New()
-	err := userRepo.Create(context.Background(), domain.User{
+	err := userRepo.Create(context.Background(), &domain.User{
 		ID:   Id,
 		Name: "Test user",
 	})
@@ -57,7 +57,7 @@ func TestUserSQLRepository_Create_AlreadyExists(t *testing.T) {
 	_, userRepo := setupUserSQLRepository(t)
 
 	Id := uuid.New()
-	err := userRepo.Create(context.Background(), domain.User{
+	err := userRepo.Create(context.Background(), &domain.User{
 		ID:   Id,
 		Name: "Test user",
 	})
@@ -65,7 +65,7 @@ func TestUserSQLRepository_Create_AlreadyExists(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = userRepo.Create(context.Background(), domain.User{
+	err = userRepo.Create(context.Background(), &domain.User{
 		ID:   Id,
 		Name: "Test user",
 	})
@@ -78,7 +78,7 @@ func TestUserSQLRepository_Update_Success(t *testing.T) {
 	_, userRepo := setupUserSQLRepository(t)
 
 	Id := uuid.New()
-	err := userRepo.Create(context.Background(), domain.User{
+	err := userRepo.Create(context.Background(), &domain.User{
 		ID:   Id,
 		Name: "Test user",
 	})
@@ -86,7 +86,7 @@ func TestUserSQLRepository_Update_Success(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = userRepo.Update(context.Background(), domain.User{
+	err = userRepo.Update(context.Background(), &domain.User{
 		ID:   Id,
 		Name: "Updated user",
 	})
@@ -106,7 +106,7 @@ func TestUserSQLRepository_Delete_Success(t *testing.T) {
 	_, userRepo := setupUserSQLRepository(t)
 
 	Id := uuid.New()
-	err := userRepo.Create(context.Background(), domain.User{
+	err := userRepo.Create(context.Background(), &domain.User{
 		ID:   Id,
 		Name: "Test user",
 	})
@@ -150,7 +150,7 @@ func TestUserSQLRepository_GetByID_Success(t *testing.T) {
 	_, userRepo := setupUserSQLRepository(t)
 
 	Id := uuid.New()
-	err := userRepo.Create(context.Background(), domain.User{
+	err := userRepo.Create(context.Background(), &domain.User{
 		ID:   Id,
 		Name: "Test user",
 	})

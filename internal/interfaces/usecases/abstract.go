@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 )
 
-//go:generate go run github.com/vektra/mockery/v2@v2.28.2 --name=AbstractRepositoryInterface
+//go:generate go run github.com/vektra/mockery/v2@v2.40.2 --name=AbstractRepositoryInterface
 type AbstractRepositoryInterface[T domain.Model] interface {
 	Create(ctx context.Context, entity T) error
 	Update(ctx context.Context, entity T) error

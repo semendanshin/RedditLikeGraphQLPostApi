@@ -15,7 +15,7 @@ func TestUserUseCase_Create(t *testing.T) {
 
 	repo.On("Create", mock.Anything, mock.Anything).Return(nil)
 
-	entity := domain.User{}
+	entity := &domain.User{}
 	err := uc.Create(nil, entity)
 
 	assert.NoError(t, err)
@@ -27,7 +27,7 @@ func TestUserUseCase_Update(t *testing.T) {
 
 	repo.On("Update", mock.Anything, mock.Anything).Return(nil)
 
-	entity := domain.User{}
+	entity := &domain.User{}
 	err := uc.Update(nil, entity)
 
 	assert.NoError(t, err)

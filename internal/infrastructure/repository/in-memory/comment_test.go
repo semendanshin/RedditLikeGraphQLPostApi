@@ -16,7 +16,7 @@ func TestInMemoryCommentRepository_Create(t *testing.T) {
 
 	// Define test data
 	ID := uuid.New()
-	comment := domain.Comment{
+	comment := &domain.Comment{
 		ID:      ID,
 		Content: "Test comment",
 	}
@@ -40,7 +40,7 @@ func TestInMemoryCommentRepository_Create_AlreadyExists(t *testing.T) {
 	commentRepo := NewCommentInMemoryRepository(logger)
 
 	ID := uuid.New()
-	comment := domain.Comment{
+	comment := &domain.Comment{
 		ID:      ID,
 		Content: "Test comment",
 	}
@@ -58,7 +58,7 @@ func TestInMemoryCommentRepository_Update(t *testing.T) {
 	commentRepo := NewCommentInMemoryRepository(logger)
 
 	ID := uuid.New()
-	comment := domain.Comment{
+	comment := &domain.Comment{
 		ID:      ID,
 		Content: "Test comment",
 	}
@@ -81,7 +81,7 @@ func TestInMemoryCommentRepository_Update_NotFound(t *testing.T) {
 	commentRepo := NewCommentInMemoryRepository(logger)
 
 	ID := uuid.New()
-	comment := domain.Comment{
+	comment := &domain.Comment{
 		ID:      ID,
 		Content: "Test comment",
 	}
@@ -97,7 +97,7 @@ func TestInMemoryCommentRepository_Delete(t *testing.T) {
 	commentRepo := NewCommentInMemoryRepository(logger)
 
 	ID := uuid.New()
-	comment := domain.Comment{
+	comment := &domain.Comment{
 		ID:      ID,
 		Content: "Test comment",
 	}
@@ -128,7 +128,7 @@ func TestInMemoryCommentRepository_GetByID(t *testing.T) {
 	commentRepo := NewCommentInMemoryRepository(logger)
 
 	ID := uuid.New()
-	comment := domain.Comment{
+	comment := &domain.Comment{
 		ID:      ID,
 		Content: "Test comment",
 	}
@@ -158,13 +158,13 @@ func TestInMemoryCommentRepository_GetAll(t *testing.T) {
 	commentRepo := NewCommentInMemoryRepository(logger)
 
 	ID1 := uuid.New()
-	comment1 := domain.Comment{
+	comment1 := &domain.Comment{
 		ID:      ID1,
 		Content: "Test comment 1",
 	}
 
 	ID2 := uuid.New()
-	comment2 := domain.Comment{
+	comment2 := &domain.Comment{
 		ID:      ID2,
 		Content: "Test comment 2",
 	}

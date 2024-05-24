@@ -8,6 +8,8 @@ import (
 
 	mock "github.com/stretchr/testify/mock"
 
+	time "time"
+
 	uuid "github.com/google/uuid"
 )
 
@@ -17,11 +19,11 @@ type CommentUseCase struct {
 }
 
 // Create provides a mock function with given fields: ctx, entity
-func (_m *CommentUseCase) Create(ctx context.Context, entity domain.Comment) error {
+func (_m *CommentUseCase) Create(ctx context.Context, entity *domain.Comment) error {
 	ret := _m.Called(ctx, entity)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(context.Context, domain.Comment) error); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *domain.Comment) error); ok {
 		r0 = rf(ctx, entity)
 	} else {
 		r0 = ret.Error(0)
@@ -45,10 +47,14 @@ func (_m *CommentUseCase) Delete(ctx context.Context, id uuid.UUID) error {
 }
 
 // GetAll provides a mock function with given fields: ctx, limit, offset
-func (_m *CommentUseCase) GetAll(ctx context.Context, limit int, offset int) []*domain.Comment {
+func (_m *CommentUseCase) GetAll(ctx context.Context, limit int, offset int) ([]*domain.Comment, error) {
 	ret := _m.Called(ctx, limit, offset)
 
 	var r0 []*domain.Comment
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, int, int) ([]*domain.Comment, error)); ok {
+		return rf(ctx, limit, offset)
+	}
 	if rf, ok := ret.Get(0).(func(context.Context, int, int) []*domain.Comment); ok {
 		r0 = rf(ctx, limit, offset)
 	} else {
@@ -57,14 +63,24 @@ func (_m *CommentUseCase) GetAll(ctx context.Context, limit int, offset int) []*
 		}
 	}
 
-	return r0
+	if rf, ok := ret.Get(1).(func(context.Context, int, int) error); ok {
+		r1 = rf(ctx, limit, offset)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
 }
 
 // GetByID provides a mock function with given fields: ctx, id
-func (_m *CommentUseCase) GetByID(ctx context.Context, id uuid.UUID) *domain.Comment {
+func (_m *CommentUseCase) GetByID(ctx context.Context, id uuid.UUID) (*domain.Comment, error) {
 	ret := _m.Called(ctx, id)
 
 	var r0 *domain.Comment
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, uuid.UUID) (*domain.Comment, error)); ok {
+		return rf(ctx, id)
+	}
 	if rf, ok := ret.Get(0).(func(context.Context, uuid.UUID) *domain.Comment); ok {
 		r0 = rf(ctx, id)
 	} else {
@@ -73,14 +89,24 @@ func (_m *CommentUseCase) GetByID(ctx context.Context, id uuid.UUID) *domain.Com
 		}
 	}
 
-	return r0
+	if rf, ok := ret.Get(1).(func(context.Context, uuid.UUID) error); ok {
+		r1 = rf(ctx, id)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
 }
 
 // GetByIds provides a mock function with given fields: ctx, ids
-func (_m *CommentUseCase) GetByIds(ctx context.Context, ids []uuid.UUID) []*domain.Comment {
+func (_m *CommentUseCase) GetByIds(ctx context.Context, ids []uuid.UUID) ([]*domain.Comment, error) {
 	ret := _m.Called(ctx, ids)
 
 	var r0 []*domain.Comment
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, []uuid.UUID) ([]*domain.Comment, error)); ok {
+		return rf(ctx, ids)
+	}
 	if rf, ok := ret.Get(0).(func(context.Context, []uuid.UUID) []*domain.Comment); ok {
 		r0 = rf(ctx, ids)
 	} else {
@@ -89,7 +115,13 @@ func (_m *CommentUseCase) GetByIds(ctx context.Context, ids []uuid.UUID) []*doma
 		}
 	}
 
-	return r0
+	if rf, ok := ret.Get(1).(func(context.Context, []uuid.UUID) error); ok {
+		r1 = rf(ctx, ids)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
 }
 
 // GetByPostID provides a mock function with given fields: ctx, postID, limit, offset
@@ -144,12 +176,38 @@ func (_m *CommentUseCase) GetChildren(ctx context.Context, commentID uuid.UUID, 
 	return r0, r1
 }
 
+// GetLastComment provides a mock function with given fields: ctx, postID, lastSeen, limit
+func (_m *CommentUseCase) GetLastComment(ctx context.Context, postID uuid.UUID, lastSeen time.Time, limit int) ([]*domain.Comment, error) {
+	ret := _m.Called(ctx, postID, lastSeen, limit)
+
+	var r0 []*domain.Comment
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, uuid.UUID, time.Time, int) ([]*domain.Comment, error)); ok {
+		return rf(ctx, postID, lastSeen, limit)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, uuid.UUID, time.Time, int) []*domain.Comment); ok {
+		r0 = rf(ctx, postID, lastSeen, limit)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]*domain.Comment)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, uuid.UUID, time.Time, int) error); ok {
+		r1 = rf(ctx, postID, lastSeen, limit)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // Update provides a mock function with given fields: ctx, entity
-func (_m *CommentUseCase) Update(ctx context.Context, entity domain.Comment) error {
+func (_m *CommentUseCase) Update(ctx context.Context, entity *domain.Comment) error {
 	ret := _m.Called(ctx, entity)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(context.Context, domain.Comment) error); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *domain.Comment) error); ok {
 		r0 = rf(ctx, entity)
 	} else {
 		r0 = ret.Error(0)
