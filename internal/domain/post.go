@@ -15,10 +15,18 @@ type Post struct {
 	UpdatedAt     time.Time `json:"updated_at"`
 }
 
-func (p Post) GetID() uuid.UUID {
+func (p *Post) GetID() uuid.UUID {
 	return p.ID
 }
 
-func (p Post) SetID(id uuid.UUID) {
+func (p *Post) SetID(id uuid.UUID) {
 	p.ID = id
+}
+
+func (p *Post) DisableComments() {
+	p.AllowComments = false
+}
+
+func (p *Post) EnableComments() {
+	p.AllowComments = true
 }

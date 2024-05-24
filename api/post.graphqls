@@ -31,4 +31,5 @@ extend type Query {
 extend type Mutation {
     createPost(input: NewPost!): Post!
     disableComments(postId: UUID!): Post!
+    enableComments(postId: UUID!): Post!
 }

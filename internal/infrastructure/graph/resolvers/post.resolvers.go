@@ -9,7 +9,6 @@ import (
 	"GraphQLTestCase/internal/infrastructure/graph/model"
 	"GraphQLTestCase/internal/utils/mappers"
 	"context"
-
 	"github.com/google/uuid"
 )
 
@@ -31,26 +30,38 @@ func (r *mutationResolver) CreatePost(ctx context.Context, input model.NewPost) 
 func (r *mutationResolver) DisableComments(ctx context.Context, postID uuid.UUID) (*model.Post, error) {
 	const op = "PostResolver.DisableComments"
 
-	//err := r.puc.DisableComments(ctx, postID)
-	//if err != nil {
-	//	return nil, err
-	//}
-	//
-	//post, err := r.puc.GetPostByID(ctx, postID, nil)
-	//if err != nil {
-	//	return nil, err
-	//}
-	//
-	//return &model.Post{
-	//	ID:            post.ID,
-	//	Title:         post.Title,
-	//	Content:       post.Content,
-	//	AuthorID:      post.AuthorID,
-	//	AllowComments: post.AllowComments,
-	//	CreatedAt:     post.CreatedAt,
-	//	UpdatedAt:     post.UpdatedAt,
-	//}, nil
-	return nil, nil
+	post, err := r.puc.GetByID(ctx, postID)
+	if err != nil {
+		return nil, err
+	}
+
+	post.DisableComments()
+
+	err = r.puc.Update(ctx, post)
+	if err != nil {
+		return nil, err
+	}
+
+	return mappers.DomainToModelPost(post), nil
+}
+
+// EnableComments is the resolver for the enableComments field.
+func (r *mutationResolver) EnableComments(ctx context.Context, postID uuid.UUID) (*model.Post, error) {
+	const op = "PostResolver.EnableComments"
+
+	post, err := r.puc.GetByID(ctx, postID)
+	if err != nil {
+		return nil, err
+	}
+
+	post.EnableComments()
+
+	err = r.puc.Update(ctx, post)
+	if err != nil {
+		return nil, err
+	}
+
+	return mappers.DomainToModelPost(post), nil
 }
 
 // Comments is the resolver for the comments field.

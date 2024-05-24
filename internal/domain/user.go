@@ -12,10 +12,10 @@ type User struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-func (u User) GetID() uuid.UUID {
+func (u *User) GetID() uuid.UUID {
 	return u.ID
 }
 
-func (u User) SetID(id uuid.UUID) {
+func (u *User) SetID(id uuid.UUID) {
 	u.ID = id
 }
