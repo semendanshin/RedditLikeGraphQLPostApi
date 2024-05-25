@@ -23,6 +23,9 @@ func setupPostSQLRepository(t *testing.T) *PostSQLRepository {
 		t.Fatal(err)
 	}
 	err = db.AutoMigrate(&domain.Post{})
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	postRepo := NewPostSQLRepository(db, slogger)
 
