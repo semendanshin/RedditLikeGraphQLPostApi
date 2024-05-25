@@ -2,7 +2,7 @@ package sql
 
 import (
 	"GraphQLTestCase/internal/domain"
-	"GraphQLTestCase/internal/infrastructure/entities"
+	"GraphQLTestCase/internal/infrastructure/repository/sql/entities"
 	"GraphQLTestCase/internal/usecases"
 	"GraphQLTestCase/internal/utils/mappers"
 	"context"

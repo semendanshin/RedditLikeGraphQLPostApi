@@ -2,8 +2,8 @@ package mappers
 
 import (
 	"GraphQLTestCase/internal/domain"
-	"GraphQLTestCase/internal/infrastructure/entities"
 	"GraphQLTestCase/internal/infrastructure/graph/model"
+	"GraphQLTestCase/internal/infrastructure/repository/sql/entities"
 )
 
 // ModelToDomainPost maps a model.Post to a domain.Post.

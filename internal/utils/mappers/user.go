@@ -2,8 +2,8 @@ package mappers
 
 import (
 	"GraphQLTestCase/internal/domain"
-	"GraphQLTestCase/internal/infrastructure/entities"
 	"GraphQLTestCase/internal/infrastructure/graph/model"
+	"GraphQLTestCase/internal/infrastructure/repository/sql/entities"
 )
 
 // ModelToDomainUser maps a model.User to a domain.User.
