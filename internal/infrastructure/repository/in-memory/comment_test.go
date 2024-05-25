@@ -181,3 +181,63 @@ func TestInMemoryCommentRepository_GetAll(t *testing.T) {
 	assert.Equal(t, "Test comment 1", comments[0].Content)
 	assert.Equal(t, "Test comment 2", comments[1].Content)
 }
+
+func TestInMemoryCommentRepository_GetByPostID(t *testing.T) {
+	logger := slogdiscard.NewDiscardLogger()
+	commentRepo := NewCommentInMemoryRepository(logger)
+
+	postID := uuid.New()
+	authorID := uuid.New()
+	commentID := uuid.New()
+
+	comment := &domain.Comment{
+		ID:       commentID,
+		PostID:   postID,
+		AuthorID: authorID,
+		Content:  "Test comment",
+	}
+
+	err := commentRepo.Create(context.Background(), comment)
+	assert.NoError(t, err)
+
+	comments, err := commentRepo.GetByPostID(context.Background(), postID, 10, 0)
+	assert.NoError(t, err)
+	assert.Len(t, comments, 1)
+	assert.Equal(t, commentID, comments[0].ID)
+}
+
+func TestInMemoryCommentRepository_GetChildren(t *testing.T) {
+	logger := slogdiscard.NewDiscardLogger()
+	commentRepo := NewCommentInMemoryRepository(logger)
+
+	postID := uuid.New()
+	authorID := uuid.New()
+	commentID := uuid.New()
+	childCommentID := uuid.New()
+
+	comment := &domain.Comment{
+		ID:       commentID,
+		PostID:   postID,
+		AuthorID: authorID,
+		Content:  "Test comment",
+	}
+
+	err := commentRepo.Create(context.Background(), comment)
+	assert.NoError(t, err)
+
+	childComment := &domain.Comment{
+		ID:       childCommentID,
+		PostID:   postID,
+		AuthorID: authorID,
+		Content:  "Test child comment",
+		ParentID: &commentID,
+	}
+
+	err = commentRepo.Create(context.Background(), childComment)
+	assert.NoError(t, err)
+
+	comments, err := commentRepo.GetChildren(context.Background(), commentID, 10, 0)
+	assert.NoError(t, err)
+	assert.Len(t, comments, 1)
+	assert.Equal(t, childCommentID, comments[0].ID)
+}
