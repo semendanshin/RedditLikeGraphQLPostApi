@@ -1,7 +1,9 @@
 package graph
 
 import (
+	"GraphQLTestCase/internal/infrastructure/graph/middleware"
 	"GraphQLTestCase/internal/interfaces/usecases"
+	"GraphQLTestCase/pkg/jwtservice"
 	"context"
 	"errors"
 	"github.com/99designs/gqlgen/graphql"
@@ -20,6 +22,7 @@ const defaultPort = "8080"
 // Server is a GraphQL server.
 type Server struct {
 	port             string
+	jwtGen           *jwtservice.Service
 	logger           *slog.Logger
 	schema           graphql.ExecutableSchema
 	srv              http.Server
@@ -33,6 +36,7 @@ type Server struct {
 // NewServer creates a new server.
 func NewServer(
 	port string,
+	jwtGen *jwtservice.Service,
 	logger *slog.Logger,
 	schema graphql.ExecutableSchema,
 	enablePlayground bool,
@@ -42,6 +46,7 @@ func NewServer(
 ) *Server {
 	return &Server{
 		port:             port,
+		jwtGen:           jwtGen,
 		logger:           logger,
 		schema:           schema,
 		enablePlayground: enablePlayground,
@@ -66,7 +71,8 @@ func (s *Server) Run() error {
 	graphQlHandler := handler.NewDefaultServer(s.schema)
 
 	queryRouter := router.PathPrefix("/query").Subrouter()
-	queryRouter.Use(DataLoaderMiddleware(s.postUseCase, s.commentUseCase, s.userUseCase, s.logger))
+	queryRouter.Use(middleware.DataLoader(s.postUseCase, s.commentUseCase, s.userUseCase, s.logger))
+	queryRouter.Use(middleware.Auth(s.jwtGen, s.logger))
 	queryRouter.Handle("", graphQlHandler)
 
 	s.logger.Info("starting server", slog.Any("port", s.port))

@@ -13,6 +13,7 @@ type Config struct {
 	Server      Server   `yaml:"server"`
 	UseDatabase *bool    `yaml:"use_database" env-required:"false" env-default:"false"`
 	Postgres    Postgres `yaml:"postgres"`
+	Tokens      Tokens   `yaml:"tokens"`
 }
 
 // Server is the configuration for the server.
@@ -28,6 +29,13 @@ type Postgres struct {
 	User string `yaml:"user"`
 	Pass string `yaml:"pass"`
 	Name string `yaml:"name"`
+}
+
+// Tokens is the configuration for the JWT tokens.
+type Tokens struct {
+	Secret     string        `yaml:"secret" env-required:"true"`
+	AccessTTL  time.Duration `yaml:"access_ttl" env-required:"true"`
+	RefreshTTL time.Duration `yaml:"refresh_ttl" env-required:"true"`
 }
 
 // MustParseConfig parses the configuration from the given path.
