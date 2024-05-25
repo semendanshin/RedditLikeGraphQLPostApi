@@ -6,6 +6,7 @@ import (
 	"time"
 )
 
+// Errors
 var (
 	ErrInvalidToken = errors.New("invalid token")
 	ErrInvalidPair  = errors.New("invalid pair")

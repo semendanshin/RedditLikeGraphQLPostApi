@@ -10,6 +10,7 @@ import (
 
 const userIDKey key = "userID"
 
+// Auth is a middleware that checks if the user is authenticated.
 func Auth(jwtGen *jwtservice.Service, logger *slog.Logger) func(next http.Handler) http.Handler {
 	const op = "Auth"
 
