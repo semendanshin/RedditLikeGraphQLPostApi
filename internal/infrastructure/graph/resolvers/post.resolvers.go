@@ -10,6 +10,7 @@ import (
 	"GraphQLTestCase/internal/infrastructure/graph/model"
 	"GraphQLTestCase/internal/utils/mappers"
 	"context"
+	"errors"
 	"github.com/google/uuid"
 )
 
@@ -27,9 +28,16 @@ func (r *mutationResolver) CreatePost(ctx context.Context, input model.NewPost) 
 
 // DisableComments is the resolver for the disableComments field.
 func (r *mutationResolver) DisableComments(ctx context.Context, postID uuid.UUID) (*model.Post, error) {
+	strUserID := middleware.GetUserID(ctx)
+	userID := uuid.MustParse(strUserID)
+
 	post, err := r.puc.GetByID(ctx, postID)
 	if err != nil {
 		return nil, err
+	}
+
+	if post.AuthorID != userID {
+		return nil, errors.New("you are not the author of this post")
 	}
 
 	post.DisableComments()
@@ -44,9 +52,16 @@ func (r *mutationResolver) DisableComments(ctx context.Context, postID uuid.UUID
 
 // EnableComments is the resolver for the enableComments field.
 func (r *mutationResolver) EnableComments(ctx context.Context, postID uuid.UUID) (*model.Post, error) {
+	strUserID := middleware.GetUserID(ctx)
+	userID := uuid.MustParse(strUserID)
+
 	post, err := r.puc.GetByID(ctx, postID)
 	if err != nil {
 		return nil, err
+	}
+
+	if post.AuthorID != userID {
+		return nil, errors.New("you are not the author of this post")
 	}
 
 	post.EnableComments()

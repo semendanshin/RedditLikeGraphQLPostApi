@@ -5,6 +5,7 @@ import (
 	"GraphQLTestCase/internal/infrastructure/graph/resolvers"
 	"GraphQLTestCase/internal/infrastructure/repository/sql"
 	"GraphQLTestCase/internal/usecases"
+	"GraphQLTestCase/pkg/jwtservice"
 	"fmt"
 	"gorm.io/driver/postgres"
 

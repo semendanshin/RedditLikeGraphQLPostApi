@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"GraphQLTestCase/pkg/jwtservice"
 	"context"
 	"log/slog"
 	"net/http"

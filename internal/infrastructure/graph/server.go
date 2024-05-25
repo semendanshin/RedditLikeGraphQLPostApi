@@ -3,6 +3,7 @@ package graph
 import (
 	"GraphQLTestCase/internal/infrastructure/graph/middleware"
 	"GraphQLTestCase/internal/interfaces/usecases"
+	"GraphQLTestCase/pkg/jwtservice"
 	"context"
 	"errors"
 	"github.com/99designs/gqlgen/graphql"
