@@ -6,6 +6,7 @@ package resolvers
 
 import (
 	"GraphQLTestCase/internal/infrastructure/graph"
+	"GraphQLTestCase/internal/infrastructure/graph/middleware"
 	"GraphQLTestCase/internal/infrastructure/graph/model"
 	"GraphQLTestCase/internal/utils/mappers"
 	"context"
@@ -17,7 +18,7 @@ import (
 
 // Author is the resolver for the author field.
 func (r *commentResolver) Author(ctx context.Context, obj *model.Comment) (*model.User, error) {
-	user, err := graph.GetUserLoader(ctx).Load(obj.AuthorID)
+	user, err := middleware.GetUserLoader(ctx).Load(obj.AuthorID)
 	if err != nil {
 		return nil, err
 	}
@@ -27,7 +28,7 @@ func (r *commentResolver) Author(ctx context.Context, obj *model.Comment) (*mode
 
 // Post is the resolver for the post field.
 func (r *commentResolver) Post(ctx context.Context, obj *model.Comment) (*model.Post, error) {
-	post, err := graph.GetPostLoader(ctx).Load(obj.PostID)
+	post, err := middleware.GetPostLoader(ctx).Load(obj.PostID)
 	if err != nil {
 		return nil, err
 
@@ -42,7 +43,7 @@ func (r *commentResolver) Parent(ctx context.Context, obj *model.Comment) (*mode
 		return nil, nil
 	}
 
-	comment, err := graph.GetCommentLoader(ctx).Load(*obj.ParentID)
+	comment, err := middleware.GetCommentLoader(ctx).Load(*obj.ParentID)
 	if err != nil {
 		return nil, err
 	}

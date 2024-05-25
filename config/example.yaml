@@ -9,3 +9,7 @@ postgres:
     user: "root"
     pass: "root"
     name: "wow"
+tokens:
+    secret: "secret"
+    access_ttl: 15m
+    refresh_ttl: 24h

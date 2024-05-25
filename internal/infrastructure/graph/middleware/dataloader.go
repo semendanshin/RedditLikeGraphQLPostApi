@@ -1,4 +1,4 @@
-package graph
+package middleware
 
 import (
 	"GraphQLTestCase/internal/domain"
@@ -10,8 +10,6 @@ import (
 	"net/http"
 	"time"
 )
-
-type key string
 
 const (
 	userLoaderKey    key = "userloader"
@@ -36,7 +34,7 @@ func newLoader[TValue any](ctx context.Context, idsLoader IdsLoader[TValue], log
 		maxBatch,
 		wait,
 		func(keys []uuid.UUID) ([]*TValue, []error) {
-			const op = "DataLoaderMiddleware.FetchData"
+			const op = "DataLoader.FetchData"
 			errors := make([]error, len(keys))
 			users, err := idsLoader.GetByIds(ctx, keys)
 			if err != nil {
@@ -52,14 +50,14 @@ func newLoader[TValue any](ctx context.Context, idsLoader IdsLoader[TValue], log
 	)
 }
 
-// DataLoaderMiddleware is a middleware that adds data loaders to the context.
-func DataLoaderMiddleware(
+// DataLoader is a middleware that adds data loaders to the context.
+func DataLoader(
 	puc usecaseInterfaces.PostUseCase,
 	cuc usecaseInterfaces.CommentUseCase,
 	uuc usecaseInterfaces.UserUseCase,
 	logger *slog.Logger,
 ) func(next http.Handler) http.Handler {
-	const op = "DataLoaderMiddleware"
+	const op = "DataLoader"
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			log := logger.With(slog.String("op", op))

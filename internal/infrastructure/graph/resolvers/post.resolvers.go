@@ -6,6 +6,7 @@ package resolvers
 
 import (
 	"GraphQLTestCase/internal/infrastructure/graph"
+	"GraphQLTestCase/internal/infrastructure/graph/middleware"
 	"GraphQLTestCase/internal/infrastructure/graph/model"
 	"GraphQLTestCase/internal/utils/mappers"
 	"context"
@@ -75,7 +76,7 @@ func (r *postResolver) Comments(ctx context.Context, obj *model.Post, limit *int
 
 // Author is the resolver for the author field.
 func (r *postResolver) Author(ctx context.Context, obj *model.Post) (*model.User, error) {
-	user, err := graph.GetUserLoader(ctx).Load(obj.AuthorID)
+	user, err := middleware.GetUserLoader(ctx).Load(obj.AuthorID)
 	if err != nil {
 		return nil, err
 	}
