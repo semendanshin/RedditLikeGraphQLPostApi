@@ -3,7 +3,6 @@ package graph
 import (
 	"GraphQLTestCase/internal/infrastructure/graph/middleware"
 	"GraphQLTestCase/internal/interfaces/usecases"
-	"GraphQLTestCase/pkg/jwt"
 	"context"
 	"errors"
 	"github.com/99designs/gqlgen/graphql"
@@ -22,7 +21,7 @@ const defaultPort = "8080"
 // Server is a GraphQL server.
 type Server struct {
 	port             string
-	jwtGen           *jwt.Generator
+	jwtGen           *jwtservice.Service
 	logger           *slog.Logger
 	schema           graphql.ExecutableSchema
 	srv              http.Server
@@ -36,7 +35,7 @@ type Server struct {
 // NewServer creates a new server.
 func NewServer(
 	port string,
-	jwtGen *jwt.Generator,
+	jwtGen *jwtservice.Service,
 	logger *slog.Logger,
 	schema graphql.ExecutableSchema,
 	enablePlayground bool,

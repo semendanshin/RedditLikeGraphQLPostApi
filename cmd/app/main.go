@@ -5,7 +5,6 @@ import (
 	"GraphQLTestCase/internal/infrastructure/graph/resolvers"
 	"GraphQLTestCase/internal/infrastructure/repository/sql"
 	"GraphQLTestCase/internal/usecases"
-	"GraphQLTestCase/pkg/jwt"
 	"fmt"
 	"gorm.io/driver/postgres"
 
@@ -90,8 +89,8 @@ func main() {
 	)
 	schema := graph.NewExecutableSchema(graph.Config{Resolvers: resolver})
 
-	// Init jwt Generator
-	jwtGen := jwt.NewGenerator(cfg.Tokens.Secret, cfg.Tokens.AccessTTL, cfg.Tokens.RefreshTTL)
+	// Init jwt Service
+	jwtGen := jwtservice.NewGenerator(cfg.Tokens.Secret, cfg.Tokens.AccessTTL, cfg.Tokens.RefreshTTL)
 
 	// Init server
 	srv := graph.NewServer(

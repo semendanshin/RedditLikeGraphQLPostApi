@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"GraphQLTestCase/pkg/jwt"
 	"context"
 	"log/slog"
 	"net/http"
@@ -10,7 +9,7 @@ import (
 
 const userIDKey key = "userID"
 
-func Auth(jwtGen *jwt.Generator, logger *slog.Logger) func(next http.Handler) http.Handler {
+func Auth(jwtGen *jwtservice.Service, logger *slog.Logger) func(next http.Handler) http.Handler {
 	const op = "Auth"
 
 	logger = logger.With(slog.Any("op", op))
@@ -36,7 +35,7 @@ func Auth(jwtGen *jwt.Generator, logger *slog.Logger) func(next http.Handler) ht
 			token = strings.TrimPrefix(token, "Bearer ")
 
 			// Get the user ID from the token
-			parsedToken, err := jwtGen.ParseToken(token)
+			parsedToken, err := jwtGen.Parse(token)
 			if err != nil {
 				logger.Error("Failed to parse token", slog.String("error", err.Error()))
 				http.Error(w, "failed to parse token", http.StatusUnauthorized)

@@ -1,29 +1,35 @@
-package jwt
+package jwtservice
 
 import (
+	"errors"
 	"github.com/golang-jwt/jwt/v5"
 	"time"
 )
 
-// Generator is a JWT token generator and parser
-type Generator struct {
+var (
+	ErrInvalidToken = errors.New("invalid token")
+	ErrInvalidPair  = errors.New("invalid pair")
+)
+
+// Service is a JWT token generator and parser
+type Service struct {
 	secret     []byte
 	accessTTL  time.Duration
 	refreshTTL time.Duration
 }
 
-// NewGenerator creates a new Generator
-func NewGenerator(secret string, accessTTL time.Duration, refreshTTL time.Duration) *Generator {
-	return &Generator{
+// NewGenerator creates a new Service
+func NewGenerator(secret string, accessTTL time.Duration, refreshTTL time.Duration) *Service {
+	return &Service{
 		secret:     []byte(secret),
 		accessTTL:  accessTTL,
 		refreshTTL: refreshTTL,
 	}
 }
 
-// GeneratePair generates a pair of access and refresh tokens
-func (g *Generator) GeneratePair(sub string) (accessToken string, refreshToken string, err error) {
-	iat := time.Now().Unix()
+// NewPair generates a pair of access and refresh tokens
+func (g *Service) NewPair(sub string) (accessToken string, refreshToken string, err error) {
+	iat := time.Now().UnixNano()
 
 	accessClaims := jwt.MapClaims{
 		"sub": sub,
@@ -51,24 +57,30 @@ func (g *Generator) GeneratePair(sub string) (accessToken string, refreshToken s
 	return accessToken, refreshToken, nil
 }
 
-// ParseToken parses a token string
-func (g *Generator) ParseToken(tokenString string) (*jwt.Token, error) {
-	return jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+// Parse parses a token string
+func (g *Service) Parse(tokenString string) (*jwt.Token, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return g.secret, nil
 	})
+
+	if err != nil {
+		return nil, ErrInvalidToken
+	}
+
+	return token, nil
 }
 
 // EnsurePair ensures that the access and refresh tokens are a pair
-func (g *Generator) EnsurePair(accessToken *jwt.Token, refreshToken *jwt.Token) error {
+func (g *Service) EnsurePair(accessToken *jwt.Token, refreshToken *jwt.Token) error {
 	accessTokenClaims := accessToken.Claims.(jwt.MapClaims)
 	refreshTokenClaims := refreshToken.Claims.(jwt.MapClaims)
 
 	if accessTokenClaims["sub"] != refreshTokenClaims["sub"] || accessTokenClaims["iat"] != refreshTokenClaims["iat"] {
-		return jwt.ErrInvalidKey
+		return ErrInvalidPair
 	}
 
 	if refreshTokenClaims["type"] != "refresh" {
-		return jwt.ErrInvalidKey
+		return ErrInvalidPair
 	}
 
 	return nil
