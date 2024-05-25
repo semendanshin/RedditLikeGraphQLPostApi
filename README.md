@@ -42,7 +42,7 @@ mutation {
 {
     "data": {
         "createPost": {
-            "id": "1",
+            "id": "af9604be-a817-49ff-8cc4-0922cc0f63aa",
             "title": "как писать графкукл",
             "content": "сначла пишешь потом плачешь",
             "author": {
@@ -81,7 +81,7 @@ query allPosts {
     "data": {
         "posts": [
             {
-                "id": "1",
+                "id": "af9604be-a817-49ff-8cc4-0922cc0f63aa",
                 "title": "как писать графкукл",
                 "author": {
                     "id": "f2c41b3a-74c3-4805-a979-758d8684ef7e",
@@ -89,7 +89,7 @@ query allPosts {
                 },
                 "comments": [
                     {
-                        "id": "1",
+                        "id": "9aa6d910-ff6e-4081-bca7-2fcd0f73a661",
                         "content": "круто",
                         "author": {
                             "id": "e5943cb2-4bfe-4379-a93a-d24a46f7d244",
