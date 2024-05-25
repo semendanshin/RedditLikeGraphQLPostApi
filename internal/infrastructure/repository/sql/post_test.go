@@ -2,6 +2,7 @@ package sql
 
 import (
 	"GraphQLTestCase/internal/domain"
+	"GraphQLTestCase/internal/infrastructure/repository/sql/entities"
 	"GraphQLTestCase/pkg/logger/slogdiscard"
 	"context"
 	"github.com/google/uuid"
@@ -22,7 +23,7 @@ func setupPostSQLRepository(t *testing.T) *PostSQLRepository {
 	if err != nil {
 		t.Fatal(err)
 	}
-	err = db.AutoMigrate(&domain.Post{})
+	err = db.AutoMigrate(&entities.Post{})
 	if err != nil {
 		t.Fatal(err)
 	}
