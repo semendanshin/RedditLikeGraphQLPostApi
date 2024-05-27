@@ -8,6 +8,7 @@ import (
 	"errors"
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/handler"
+	"github.com/99designs/gqlgen/graphql/handler/extension"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/gorilla/mux"
 	"log/slog"
@@ -69,6 +70,7 @@ func (s *Server) Run() error {
 	}
 
 	graphQlHandler := handler.NewDefaultServer(s.schema)
+	graphQlHandler.Use(extension.FixedComplexityLimit(1000))
 
 	queryRouter := router.PathPrefix("/query").Subrouter()
 	queryRouter.Use(middleware.DataLoader(s.postUseCase, s.commentUseCase, s.userUseCase, s.logger))
