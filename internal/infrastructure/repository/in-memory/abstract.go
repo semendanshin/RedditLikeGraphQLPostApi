@@ -14,7 +14,7 @@ var _ usecases.AbstractRepositoryInterface[domain.Model] = &AbstractInMemoryRepo
 // AbstractInMemoryRepository is a repository for in-memory databases.
 type AbstractInMemoryRepository[T domain.Model] struct {
 	entities map[uuid.UUID]T
-	m        sync.Mutex
+	m        sync.RWMutex
 	logger   *slog.Logger
 }
 
@@ -22,7 +22,7 @@ type AbstractInMemoryRepository[T domain.Model] struct {
 func NewAbstractInMemoryRepository[T domain.Model](logger *slog.Logger) AbstractInMemoryRepository[T] {
 	return AbstractInMemoryRepository[T]{
 		entities: make(map[uuid.UUID]T),
-		m:        sync.Mutex{},
+		m:        sync.RWMutex{},
 		logger:   logger,
 	}
 }
@@ -63,8 +63,8 @@ func (r *AbstractInMemoryRepository[T]) Delete(ctx context.Context, id uuid.UUID
 
 // GetByID returns an entity by ID.
 func (r *AbstractInMemoryRepository[T]) GetByID(ctx context.Context, id uuid.UUID) (T, error) {
-	r.m.Lock()
-	defer r.m.Unlock()
+	r.m.RLock()
+	defer r.m.RUnlock()
 	if entity, ok := r.entities[id]; ok {
 		return entity, nil
 	}
@@ -75,8 +75,8 @@ func (r *AbstractInMemoryRepository[T]) GetByID(ctx context.Context, id uuid.UUI
 // GetByIds returns entities by IDs.
 func (r *AbstractInMemoryRepository[T]) GetByIds(ctx context.Context, ids []uuid.UUID) ([]T, error) {
 	const op = "AbstractInMemoryRepository.GetByIds"
-	r.m.Lock()
-	defer r.m.Unlock()
+	r.m.RLock()
+	defer r.m.RUnlock()
 	entities := make([]T, 0, len(ids))
 	for _, id := range ids {
 		if entity, ok := r.entities[id]; ok {
@@ -89,8 +89,8 @@ func (r *AbstractInMemoryRepository[T]) GetByIds(ctx context.Context, ids []uuid
 
 // GetAll returns all entities.
 func (r *AbstractInMemoryRepository[T]) GetAll(ctx context.Context, limit int, offset int) ([]T, error) {
-	r.m.Lock()
-	defer r.m.Unlock()
+	r.m.RLock()
+	defer r.m.RUnlock()
 
 	keys := make([]uuid.UUID, 0)
 	for key := range r.entities {

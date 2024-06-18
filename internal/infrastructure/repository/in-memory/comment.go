@@ -25,8 +25,8 @@ func NewCommentInMemoryRepository(logger *slog.Logger) *CommentInMemoryRepositor
 
 // GetChildren returns all children of a comment.
 func (r *CommentInMemoryRepository) GetChildren(ctx context.Context, commentID uuid.UUID, limit int, offset int) ([]*domain.Comment, error) {
-	r.m.Lock()
-	defer r.m.Unlock()
+	r.m.RLock()
+	defer r.m.RUnlock()
 
 	var keys []uuid.UUID
 	for key := range r.entities {
@@ -47,8 +47,8 @@ func (r *CommentInMemoryRepository) GetChildren(ctx context.Context, commentID u
 
 // GetByPostID returns all comments for a post.
 func (r *CommentInMemoryRepository) GetByPostID(ctx context.Context, postID uuid.UUID, limit int, offset int) ([]*domain.Comment, error) {
-	r.m.Lock()
-	defer r.m.Unlock()
+	r.m.RLock()
+	defer r.m.RUnlock()
 
 	var keys []uuid.UUID
 	for key := range r.entities {
@@ -68,8 +68,8 @@ func (r *CommentInMemoryRepository) GetByPostID(ctx context.Context, postID uuid
 
 // GetLastComment returns the last comments of a post.
 func (r *CommentInMemoryRepository) GetLastComment(ctx context.Context, postID uuid.UUID, lastSeen time.Time, limit int) ([]*domain.Comment, error) {
-	r.m.Lock()
-	defer r.m.Unlock()
+	r.m.RLock()
+	defer r.m.RUnlock()
 
 	var keys []uuid.UUID
 	for key := range r.entities {

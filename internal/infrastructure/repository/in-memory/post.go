@@ -24,8 +24,8 @@ func NewPostInMemoryRepository(logger *slog.Logger) *PostInMemoryRepository {
 
 // GetByAuthorID returns all posts by a user.
 func (r *PostInMemoryRepository) GetByAuthorID(ctx context.Context, userID uuid.UUID, limit int, offset int) ([]*domain.Post, error) {
-	r.m.Lock()
-	defer r.m.Unlock()
+	r.m.RLock()
+	defer r.m.RUnlock()
 
 	var posts []*domain.Post
 
